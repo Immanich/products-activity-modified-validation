@@ -2,34 +2,35 @@
 
 @section('content')
 
-<div class="container mx-auto p-6">
-
-    <div class="flex items-center">
-        <h1 class="text-4xl pr-60">Products</h1>
-        <form hx-get="/api/products"
-              hx-target="#products-list"
-              hx-trigger="submit">
-            <input type="text"
-                   name="filter"
-                   class="p-2 border border-gray-300 ml-5 mr-2 rounded"
-                   placeholder="Filter products">
-                
-        </form>
-        <button id="openModalBtn" class="btn bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">Add Product</button>
+<div class="container mx-auto p-14">
+    <div class="flex items-center justify-between">
+        <h1 class="text-4xl">Products</h1>
+        <div class="form flex flex-row">
+            <form hx-get="/api/products"
+                hx-target="#products-list"
+                hx-trigger="submit">
+                <input type="text"
+                    name="filter"
+                    class="p-2 border border-gray-300 ml-5 mr-2 rounded"
+                    placeholder="Filter products">
+                    
+            </form>
+            <button id="openModalBtn" class="btn bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">Add Product</button>
+        </div>
   
         </div>
     <hr class="my-4">
-    <div 
-        id="products-list" 
-        class="flex flex-wrap justify-center gap-3 mt-3" 
-        hx-get="/api/products" 
-        hx-trigger="load" 
-        hx-swap="innerHTML">
+    <div class="flex justify-center">
+        <div 
+            id="products-list" 
+            class="flex flex-row flex-wrap justify-center gap-2 mt-3" 
+            hx-get="/api/products" 
+            hx-trigger="load" 
+            hx-swap="innerHTML">
+        </div>
     </div>
-
     <div id="myModal" class="modal fixed inset-0 flexbg-black bg-opacity-50 hidden">
         <div class="modal-content bg-white p-6 rounded-lg shadow-lg w-full max-w-md" hx-get="/open" hx-trigger="load" hx-swap="innerHTML">
-          
         </div>
     </div>
 </div>

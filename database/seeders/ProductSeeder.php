@@ -20,37 +20,43 @@ class ProductSeeder extends Seeder
                 'name' => 'ROLAND',
                 'description' => 'XPS-10',
                 'quantity' => 99,
-                'price' => 32999.00
+                'price' => 32999.00,
+                'is_seeded' => true,
             ],
             [
                 'name' => 'ROLAND',
                 'description' => 'XPS-30',
                 'quantity' => 99,
-                'price' => 42999.00
+                'price' => 42999.00,
+                'is_seeded' => true,
             ],
             [
                 'name' => 'NORD',
                 'description' => 'Stage',
                 'quantity' => 99,
-                'price' => 133999.00
+                'price' => 133999.00,
+                'is_seeded' => true,
             ],
             [
                 'name' => 'NORD',
                 'description' => 'Lead',
                 'quantity' => 99,
-                'price' => 249999.00
+                'price' => 249999.00,
+                'is_seeded' => true,
             ],
             [
                 'name' => 'NORD',
                 'description' => 'electro',
                 'quantity' => 99,
-                'price' => 89999.00
+                'price' => 89999.00,
+                'is_seeded' => true,
             ],
             [
                 'name' => 'KORG',
                 'description' => 'Kross',
                 'quantity' => 99,
-                'price' => 48999.00
+                'price' => 48999.00,
+                'is_seeded' => true,
             ],
         ];
 

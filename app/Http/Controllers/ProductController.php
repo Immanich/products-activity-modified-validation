@@ -12,24 +12,49 @@ class ProductController extends Controller
 
         if($request->filter) {
             $products->where('name','like',"%$request->filter%")
-                        ->orWhere('description','like',"%$request->filter%");
+                ->orWhere('description','like',"%$request->filter%");
         }
 
-         $html = "";
+        $html = "";
 
-         foreach($products->get() as $prod) {
+        foreach($products->get() as $prod) {
             $formattedPrice = number_format($prod->price, 2);
             $html .= "
             <div class='p-4 rounded bg-blue-200 w-[20rem]'>
-                <h3 class=''>Name: $prod->name</h3>
-                <hr class='m-2'>
-                <div class=''>Description: $prod->description</div>
-                <div class=''>Price: ₱$formattedPrice</div>
-                <div class=''>Quantity: $prod->quantity</div>
+                <h3 class='flex justify-between'>Product: <span>$prod->name</span></h3>
+                <hr class='m-2'> 
+                <div class='flex justify-between'>Description: <span>$prod->description</span></div>
+                <div class='flex justify-between'>Quantity: <span>$prod->quantity</span></div>
+                <div class='flex justify-between'>Price: <span>₱$formattedPrice</span></div>
+                <div class='flex justify-end gap-4 mt-2'>
+                    <a 
+                        href='".route('edit', $prod->description)."'>
+                        <span></span>
+                        <i class='fa-regular fa-pen-to-square'></i>
+                    </a>
+                    <button 
+                        hx-delete='".route('destroy', $prod->id)."'
+                        hx-confirm='Are you sure you want to delete this product?'
+                        hx-target='this'
+                        hx-swap='none'
+                        onclick='setTimeout(function(){ location.reload(); }, 100)'>
+                        <i class='fa-solid fa-trash'></i>
+                    </button>   
+                </div>
             </div>
             ";
         }
-         return $html;
+        return $html;
+    }
+
+    public function destroy($id) {
+        $product = Product::find($id);
+        if ($product) {
+            $product->delete();
+            return response()->json(['alert' => ['type' => 'success', 'message' => 'Product deleted successfully.']]);
+        } else {
+            return response()->json(['alert' => ['type' => 'danger', 'message' => 'Product not found.']]);
+        }
     }
 
     public function store(Request $request)
@@ -41,18 +66,14 @@ class ProductController extends Controller
             'price' => 'required|numeric',
             'quantity' => 'required|integer',
         ]);
-    
-    
+
         $product = Product::create([
             'name' => $request->name,
             'description' => $request->description,
             'price' => $request->price,
             'quantity' => $request->quantity,
         ]);
-
         $products = Product::orderBy('id');
-
-      
         $html = "";
         
         foreach($products->get() as $prod) {
@@ -62,15 +83,13 @@ class ProductController extends Controller
                 <h3 class=''>Name: $prod->name</h3>
                 <hr class='m-2'>
                 <div class=''>Description: $prod->description</div>
-                <div class=''>Price: ₱$formattedPrice</div>
                 <div class=''>Quantity: $prod->quantity</div>
+                <div class=''>Price: ₱$formattedPrice</div>
             </div>
             <div hx-swap-oob='true' id='success' class='bg-green-200 text-center m-2 rounded'>
             Product Successfully Added!
-        </div>
-       
-     
-    ";
+            </div>
+        ";
          }
 
          if($product){
@@ -133,39 +152,70 @@ class ProductController extends Controller
     }
     
     
+    public function close() {
+        $html = '';
 
-public function close() {
-    $html = '';
+        $html .= '<button type="button" id="modalSubmitButton" onclick="closeModal()" class="btn bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700 transition duration-300">Close</button>';
 
-    $html .= '<button type="button" id="modalSubmitButton" onclick="closeModal()" class="btn bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700 transition duration-300">Close</button>';
-
-    return $html;
-}
-
-public function message(){
-
-    $html = '';
-
-    $html .= '
-     <div hx-swap-oob="true" id="success" class="bg-green-200 text-center m-2 rounded">
-     Product Successfully Added!
-
-     </div>
-    ';
-    return $html;
-}
-
-public function error(){
-
-    $html = '';
-
-    $html .= '
-     <div id="error" class="bg-red-200 text-center m-2 rounded">
-     Product Error!
-
-     </div>
-    ';
-    return $html;
+        return $html;
     }
-    
-}
+
+    public function message(){
+
+        $html = '';
+
+        $html .= '
+        <div hx-swap-oob="true" id="success" class="bg-green-200 text-center m-2 rounded">
+        Product Successfully Added!
+
+        </div>
+        ';
+        return $html;
+    }
+
+    public function error(){
+
+        $html = '';
+
+        $html .= '
+        <div id="error" class="bg-red-200 text-center m-2 rounded">
+        Product Error!
+
+        </div>
+        ';
+        return $html;
+        }
+        
+        public function edit($description) {
+        $products = Product::where('description', $description)->firstOrFail();
+
+        return view('edit', compact('products'));
+        }
+
+        public function update(Request $request, $description) {
+            $request->validate([
+                'name' => 'required',
+                'description' => 'required',
+                'quantity' => 'required|numeric',
+                'price' => 'required|numeric',
+            ]);
+
+            $products = Product::where('description', $description)->firstOrFail();
+
+            // if ($request->hasFile('image')) {
+            //     $imagePath = $request->file('image')->store('images', 'public');
+            //     $products->image = $imagePath;
+            // }
+
+            $products->name = $request->name;
+            $products->description = $request->description;
+            $products->quantity = $request->quantity;
+            $products->price = $request->price;
+            $products->is_seeded = false;
+
+            $products->save();
+
+            return redirect('/product')->with('success', 'Product updated successfully.');
+        }
+
+    }

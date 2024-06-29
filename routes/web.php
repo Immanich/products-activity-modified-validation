@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProductController;
+use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,7 +24,9 @@ Route::get('/', function() {
 });
 
 Route::get('/about', function() { return view('about');});
-Route::get('/product', function() { return view('products');});
+Route::get('/product', function() { return view('products');})->name('products');
+Route::get('/product/{description}', [ProductController::class, 'edit'])->name('edit');
+Route::put('/product/{description}', [ProductController::class, 'update'])->name('update');
 Route::get('/contact', function() { return view('contact');});
 
 Route::get('/open', [ProductController::class, 'open']);

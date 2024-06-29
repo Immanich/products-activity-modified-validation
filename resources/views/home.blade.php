@@ -1,7 +1,7 @@
 @extends('base.base')
 
 @section('content')
-    <div>
-        <h1>Home</h1>
+    <div class="container flex justify-center items-center w-full h-full hover:bg-gray-700 hover:text-zinc-200 duration-500">
+        <h1 style="font-size: 4rem;" class="font-bold">HOME PAGE</h1>
     </div>
 @endsection
