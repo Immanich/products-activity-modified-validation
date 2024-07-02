@@ -26,16 +26,12 @@
                         <label for="productPrice">Price</label>
                         <input type="number" class="form-control" id="productPrice" name="price" step="0.01" >
                     </div>
-                    <div class="form-group">
-                        <label for="productImageUrl">Image URL</label>
-                        <input type="url" class="form-control" id="productImageUrl" name="image_url" >
-                    </div>
                     <div id="addProductMessage">
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="resetForm()">Close</button>
-                        <button type="submit" class="btn btn-primary">Save Product</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="resetForm()">Back</button>
+                        <button type="submit" class="btn btn-primary">Add Product</button>
                     </div>
                 </form>
             </div>

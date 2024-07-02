@@ -26,3 +26,4 @@ Route::get('/products', function () {
     return view('pages.products');
 });
 
+
